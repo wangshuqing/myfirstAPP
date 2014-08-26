@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0;user-scalable=no"/>
+<title>无标题文档</title>
+<link href="jquery-mobile/jquery.mobile-1.4.2.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+<!-- 只要将当前站点配置为移动应用程序，则对 cordova.js 的该引用将允许代码提示。
+	 要将该站点配置为移动应用程序，请转至“站点”->“移动应用程序”->“配置应用程序框架...”-->
+<script src="cordova.js" type="text/javascript"></script>
+
+
+<style>
+html,body{
+    height: 100%;
+    width: 100%;
+	margin:0;
+	padding:0;
+}
+</style>
+<script>
+window.onload=function(){
+  document.getElementById("dataLoad").style.display="none";
+}
+</script>
+</head>
+<body  >
+<div data-role="page" style="border:1px solid yellow"> 
+<div data-role="header""></div>
+<div id="schoolmap"  style="margin:0; padding:0; width:100%; height:100%; position:absolute; overflow:hidden " >
+    <iframe src="http://222.195.158.169/mobile/ouc.html" style="width:100%; height:100%;"></iframe>
+</div>
+    <div data-role="footer" data-position="fixed" id="footernavbar"  data-theme="b" style="display:none">
+       <div data-role="navbar" >
+       <ul>
+        <li><a href="#" onClick="backhistory();" >返回主页面</a></li>
+        <li><a href="#" id="back" onClick="exitapp();">退出</a></li> 
+       </ul>
+       </div>
+    </div>
+ </div>
+</div> 
+ 
+</body>
+</html>
+<script>
+ document.addEventListener("deviceready",onDeviceReady,false); 
+ function onDeviceReady(){ 
+       document.addEventListener("menubutton",onMenuKeyDown,false);
+ }
+       //退出
+  function exitapp(){
+	   navigator.app.exitApp();
+  }
+  function backhistory(){
+	   navigator.app.backHistory();
+  }
+ function onMenuKeyDown()
+ {
+	$("#footernavbar").slideToggle("fast"); 
+ }
+</script>
