@@ -46,7 +46,7 @@ $(document).on("pageloadfailed",function(event,data){
         <canvas id="myCanvas" width="30" height="30"></canvas>
      </div>
      
-     <div  style="position:absolute; right:5%; top:15%; z-index:5; ">
+     <div  style="position:absolute; right:5%; top:100px; z-index:5; ">
         <button id="recordtrajectory" >记录</button>
      </div>
      
@@ -110,7 +110,7 @@ $(document).on("pageloadfailed",function(event,data){
   <span >标题:</span>
   <input type="text" id="title" autofocus >
   <span>内容:</span>
-  <textarea rows="5" id="detail" ></textarea>
+  <textarea rows="5" id="detail"  ></textarea>
   <div >
        <img src="#" width="150px" height="200px" id="picture" style="display:none">
   </div>
@@ -126,9 +126,12 @@ $(document).on("pageloadfailed",function(event,data){
        <a href="#"  data-icon="refresh" id="refreshlist">刷新</a>
     </div> 
     <div data-role="content">
-       <ul id="notelistview" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="日志搜索">
-       </ul>
-           <a href="#" data-role="button" onClick="SelectNote(10000000)">查看全部</a>
+       <div id="notfind" style="display:none;"></div>
+        <div>
+         <ul id="notelistview" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="日志搜索" >
+         </ul>
+         <a href="#" data-role="button" onClick="SelectNote(10000000)">查看全部</a>
+        </div>
     </div>
  </div>
 <!--显示足迹详细页面-->
@@ -186,7 +189,6 @@ $(document).on("pageloadfailed",function(event,data){
 	   timeoutID= setTimeout(GPSrotate,50);
    }
 
-	
    var map,watchID,marker=null; 
    function onLoad()
    {
@@ -200,6 +202,8 @@ $(document).on("pageloadfailed",function(event,data){
    }
    function onDeviceReady(){ 
       GPSrotate();//正在定位
+	 // $.mobile.loading("show",{text:'正在定位...',textVisible: true,theme: 'e',})
+	  
       $("#recordtrajectory").on("tap",function(){
 		  if($(this).text()=="记录"){
 			$.mobile.loading("show",{text:'足迹记录中...',textVisible: true,theme: 'e',})
@@ -500,6 +504,6 @@ $(document).on("pageloadfailed",function(event,data){
 			  alert(err);
 		 }
       }  
- // loadScript();
+  loadScript();
 </script>  
 

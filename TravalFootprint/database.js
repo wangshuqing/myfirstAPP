@@ -3,10 +3,14 @@ var lng=120,lat=36;
 var centerlng=120.50188,centerlat=36.167649;
 var largeflag=false;//图片是否放大的标志
 
+//轨迹列表
 $(document).on("pageinit","#TrajectoryList",function(){
    SelectTrajectory(4)
 });
 
+
+
+//新建轨迹点
 $(document).on("pageinit","#newnote",function(){
 	
 	   //本地存储
@@ -25,7 +29,7 @@ $(document).on("pageinit","#newnote",function(){
 	    insertNote();
 	});
 });
-
+//轨迹点列表
 $(document).on("pageinit","#noteslist",function(){
   $("#refreshlist").on("tap",function(){
         SelectNote(4);
@@ -33,7 +37,7 @@ $(document).on("pageinit","#noteslist",function(){
   SelectNote(4);
 });
 
-
+//轨迹点详细信息
 $(document).on("pageinit","#detailnote",function(){
 	$("#delete").on("tap",function(){
 	   var id=$("#noteid").text();
@@ -45,7 +49,11 @@ $(document).on("pageinit","#detailnote",function(){
 	{
 		//4个参数分别是 数据库名,版本号，数据库的描述，数据库大小 
 		 var travelnote=window.openDatabase("travelnote","1.0","travelnote-db",10000000);
+		
          /*
+		   travelnote.transaction(function(t){
+		     t.executeSql("drop table notestable");
+		  });//删除表
 		 		travelnote.transaction(function(t){
 			    t.executeSql("delete from notestable");
 			}); //删除数据表
@@ -83,7 +91,7 @@ $(document).on("pageinit","#detailnote",function(){
 			  $("#title").val("");
 			  $("#detail").val("");
 			  $("#picture").hide();
-			  
+			  SelectNote(4);
 			  $.mobile.changePage("#noteslist","slide",false,true);
 			}
 		);  
@@ -96,6 +104,9 @@ function SelectNote(num){
    travelnote.transaction(function(t){
 	          // t.executeSql("drop table if exists positions");
 			   t.executeSql('select * from notestable  ORDER BY id DESC limit ?',[num],function(t,results){
+				     $("#notfind").hide();
+					 
+					 list.parent("div").show();
 					 for(i=0;i<results.rows.length;i++)
 					 {
 						   items.push("<li><a href='#detailnote'  data-noteid="+results.rows.item(i).id+"> <h2>" +results.rows.item(i).title+"</h2><p>创建日期："+                          results.rows.item(i).createdate+"</p></a></li>")
@@ -110,7 +121,19 @@ function SelectNote(num){
 					 
 			   });	
 		    }, function(error){
-			  alert("查询失败"+error.message);
+			  
+			  if(error.code==5)
+			  {
+		          $("#notfind").show();
+				   list.parent("div").hide();
+				  var createnew='<a href="#newnote">新建</a>'
+				  $("#notfind").html("暂无历史数据，您可以"+createnew+"您的第一个轨迹点")
+				 
+			  }
+			  else
+			  {
+				  list.html("查询失败:"+erroe.message);
+			  }
 			  $.mobile.loading("hide");  
 			}, function(){ 
 			      $.mobile.loading("hide");  
