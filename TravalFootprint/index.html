@@ -200,11 +200,14 @@ $(document).on("pageloadfailed",function(event,data){
    function exitapp(){
 	       navigator.app.exitApp();
    }
+   
+
+   
    function onDeviceReady(){ 
       GPSrotate();//正在定位
 	 // $.mobile.loading("show",{text:'正在定位...',textVisible: true,theme: 'e',})
 	  
-      $("#recordtrajectory").on("tap",function(){
+	        $("#recordtrajectory").on("tap",function(){
 		  if($(this).text()=="记录"){
 			$.mobile.loading("show",{text:'足迹记录中...',textVisible: true,theme: 'e',})
 	        $(this).text("记录中");
@@ -504,6 +507,6 @@ $(document).on("pageloadfailed",function(event,data){
 			  alert(err);
 		 }
       }  
-  loadScript();
+ // loadScript();
 </script>  
 
