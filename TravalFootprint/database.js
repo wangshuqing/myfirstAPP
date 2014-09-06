@@ -4,33 +4,43 @@ var centerlng=120.50188,centerlat=36.167649;
 var largeflag=false;//图片是否放大的标志
 
 //轨迹列表
-$(document).on("pageinit","#TrajectoryList",function(){
+$(document).on("pageshow","#TrajectoryList",function(){
    SelectTrajectory(4)
 });
 
 
-
-//新建轨迹点
-$(document).on("pageinit","#newnote",function(){
-	
-	   //本地存储
-	   //window.localStorage.setItem("username","王淑庆");
-	   //var value=window.localStorage.getItem("username");
+function GetLocation(){
+      $.mobile.loading("show",{text:'正在获取位置..',textVisible: true,theme: 'e',});
 	  var  options = {timeout: 20000, enableHighAccuracy: true }; 
 		navigator.geolocation.getCurrentPosition(function(position){
 			    lng=position.coords.longitude;
 				lat=position.coords.latitude;
+				$.mobile.loading("show",{text:'正在获取位置成功',textVisible: true,theme: 'e',});
+				setTimeout(function(){$.mobile.loading("hide");},1000);
 			}, 
 		   function(){
-			  alert("获取位置失败");
+			  $.mobile.loading("show",{text:'获取位置失败',textVisible: true,theme: 'e',});
+			  setTimeout(function(){$.mobile.loading("hide");},1500);
 		   },
 	  options);
+}
+
+
+//新建轨迹点
+$(document).on("pageshow","#newnote",function(){
+	
+	   //本地存储
+	   //window.localStorage.setItem("username","王淑庆");
+	   //var value=window.localStorage.getItem("username");
+	 GetLocation();  
 	$("#insertnote").click(function(){
 	    insertNote();
 	});
 });
 //轨迹点列表
-$(document).on("pageinit","#noteslist",function(){
+$(document).on("pageshow","#noteslist",function(){
+
+  
   $("#refreshlist").on("tap",function(){
         SelectNote(4);
   })
@@ -38,7 +48,7 @@ $(document).on("pageinit","#noteslist",function(){
 });
 
 //轨迹点详细信息
-$(document).on("pageinit","#detailnote",function(){
+$(document).on("pageshow","#detailnote",function(){
 	$("#delete").on("tap",function(){
 	   var id=$("#noteid").text();
 	   DeleteNote(id);
@@ -194,7 +204,7 @@ function Showdetailinfo(id)
 					    $.mobile.changePage("#home");
 					    $(document).on("pageshow","#home",function(){
 							 map.clearOverlays();
-						     var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>"+title+"</h4><img style='float:right;margin:4px' width='139' height='104' id='imgDemo' src="+picuri+"><p  style='margin:0;line-height:1.5;font-size:13px;'>"+detail+"</p><p style='margin:0;line-height:1.5;font-size:13px;'>创建日期："                                           + createdate+"</p></div>";
+						     var sContent ="<h4 style='margin:0 0 5px 0;padding:0.2em 0'>"+title+"</h4><img style='float:right;margin:4px' width='120' height='104' id='imgDemo' src="+picuri+"><p  style='margin:0;line-height:1.5;font-size:13px;'>"+detail+"</p><p style='margin:0;line-height:1.5;font-size:13px;'>创建日期："                                           + createdate+"</p></div>";
                              var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
 							 map.setCenter(pt);
 					         map.setZoom(17);
